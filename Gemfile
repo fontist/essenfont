@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-gem "fontisan", github: "fontist/fontisan", branch: "main"
+gem "fontisan", path: "/Users/mulgogi/src/fontist/fontisan"
 gem "rake"
 
 group :development do
