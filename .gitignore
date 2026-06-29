@@ -1,0 +1,18 @@
+# Build output (NOT the input donor fonts under references/)
+/Essenfont*.ttf
+/Essenfont*.otf
+/Essenfont*.woff
+/Essenfont*.woff2
+
+# Temp / planning
+TODO*/
+
+# Ruby
+/.bundle/
+/.yardoc
+/pkg/
+Gemfile.lock
+
+# OS
+.DS_Store
+Thumbs.db

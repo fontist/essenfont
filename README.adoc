@@ -1,0 +1,370 @@
+= essenfont
+:toc: macro
+:toclevels: 3
+:icons: font
+:source-language: asciidoc
+
+The Fontist universal Unicode 17 font — one font, every assigned codepoint.
+
+image:https://img.shields.io/badge/Unicode-17.0.0-blue.svg[Unicode 17]
+image:https://img.shields.io/badge/license-OFL-success.svg[OFL]
+image:https://img.shields.io/badge/format-TTF-informational[TTF]
+image:https://img.shields.io/badge/build-Ruby%20%2B%20fontisan-red[Ruby + fontisan]
+
+'''
+
+toc::[]
+
+== What essenfont is
+
+essenfont is a single redistributable OpenType font that covers every
+assigned Unicode 17 codepoint (~299,382 glyphs across ~346 blocks).
+Think of it as the spiritual successor to the
+https://github.com/unicode-org/last-resort-font[Unicode Last Resort Font] —
+except essenfont ships *real outlines* (vector-extracted from canonical
+donor fonts) instead of placeholder tofu boxes.
+
+essenfont is **100% donor-derived** — there is no hand-designed UFO
+source. Every glyph is extracted from a canonical Tier 1 donor font
+(Noto family + Full-Sung + Lentariso + Kedebideri + UniHieroglyphica +
+NotoSerifTaiYo + Symbola + BabelStone + ~17 total). The build script
+reads each donor via `fontisan` and copies the relevant glyphs into
+essenfont's glyph set.
+
+== Why use essenfont
+
+* *Unicode 17 fallback* — install once, get Unicode 17 rendering everywhere
+* *No more tofu* — rare scripts (Tai Yo, Sidetic, Beria Erfe, Egyptian
+  Hieroglyphs Extended-B) render correctly instead of boxes
+* *Vector outlines* — real glyphs, not bitmap placeholders
+* *OFL license* — embed in PDFs, bundle with software, redistribute freely
+* *Single file* — replaces the need to install 10+ script-specific fonts
+* *Browser-friendly* — use as `font-display: swap` last-resort fallback
+
+== Installation
+
+=== Download a release
+
+Grab the latest TTF from the
+link:../../releases/latest[GitHub Releases page]. Install it on your
+operating system:
+
+* *macOS*: Double-click `Essenfont-Regular.ttf` → "Install Font"
+* *Windows*: Right-click → "Install for all users"
+* *Linux*: Copy to `~/.local/share/fonts/` and run `fc-cache -fv`
+
+Once installed, configure your browser or OS to use essenfont as the
+last-resort fallback font. Any codepoint not covered by your active
+font will render via essenfont.
+
+=== Use in web pages
+
+[source,css]
+----
+@font-face {
+  font-family: 'essenfont';
+  src: url('https://cdn.fontist.org/essenfont/v0.1/Essenfont-Regular.woff2') format('woff2');
+  font-display: swap;
+  unicode-range: U+1E6C0-1E6FF, U+10940-1095F, U+16EA0-16EDF, /* ... rare scripts ... */;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'essenfont';
+}
+----
+
+== Unicode coverage
+
+essenfont covers every assigned Unicode 17 codepoint. Per-block
+coverage falls into three tiers:
+
+[cols="1,4,1", options="header"]
+|===
+|Tier |Description |~Coverage
+
+|Tier 1
+|Real glyphs sourced from canonical OFL-licensed donor fonts (Noto family, Full-Sung, Lentariso, Kedebideri, UniHieroglyphica, etc.)
+|~99% of assigned codepoints
+
+|Tier 2
+|Vector outlines extracted from the Unicode Code Charts PDFs (for blocks where no redistributable Tier 1 font exists)
+|<1% — rare combinations of unassigned + private specimen fonts
+
+|Tier 3
+|Last Resort tofu boxes (placeholder glyphs with codepoint hex labels) for codepoints no donor covered
+|<1% — unassigned, PUA, non-character codepoints
+|===
+
+See link:sources/manifest.yml[sources/manifest.yml] for the canonical
+donor font registry and which blocks each donor covers.
+
+== Build from source
+
+The font is built by stitching glyphs from donor fonts via a Ruby
+build script that uses
+link:../../fontisan[fontisan] (not AFDKO, not fonttools).
+
+There is no UFO source. Every glyph comes from a donor font. The
+build is purely an assembly pipeline:
+
+----
+donor fonts → fontisan reads → per-cp glyph extraction → fontisan writes → Essenfont-Regular.ttf
+----
+
+=== Prerequisites
+
+* Ruby 3.2+
+* `bundler`
+* `fontisan` gem (latest main)
+* `ucode` gem (for the universal-set manifest — drives the per-cp donor map)
+* Donor font files in `sources/fonts/` (see below)
+
+=== Acquire donor fonts
+
+Most donors are auto-downloadable via
+link:../../ucode[ucode]:
+
+[source,bash]
+----
+cd /path/to/ucode
+bundle exec ucode fetch fonts
+
+# Then copy the donor files to essenfont:
+cp data/fonts/*.{ttf,otf,ttc} /path/to/essenfont/sources/fonts/
+----
+
+The Full-Sung family (Taiwan MOE 全宋體) is `path_local_only`:
+
+* `FSung-m.ttf` — BMP (CJK Unified Ideographs + common scripts)
+* `FSung-2.ttf` — SIP (CJK Extensions B/C/D/E)
+* `FSung-3.ttf` — TIP + Extension J (Unicode 17)
+* `FSung-X.ttf` — Plane 3
+
+Download manually from the Taiwan MOE website; place at
+`sources/fonts/`.
+
+Other `path_local_only` donors:
+
+* `noto-serif-tai-yo` — pre-release Noto variant; contact translationcommons.org maintainers
+
+See link:sources/README.md[sources/README.md] for full donor
+acquisition instructions.
+
+=== Build the TTF
+
+[source,bash]
+----
+# Build (the ONLY path — every glyph comes from donors)
+ruby scripts/build.rb
+
+# Verify the output
+ruby scripts/verify.rb Essenfont-Regular.ttf
+----
+
+The build produces `Essenfont-Regular.ttf` in the repo root.
+
+== Project structure
+
+----
+essenfont/
+├── README.adoc                # this file
+├── LICENSE                    # OFL (the assembled font)
+├── scripts/                   # Ruby build scripts (use fontisan)
+│   ├── build.rb               # donors → Essenfont-Regular.ttf
+│   ├── build_he.rb            # high-efficiency variant (cmap format 13)
+│   └── verify.rb              # round-trip validation
+├── sources/
+│   ├── manifest.yml           # donor font registry (label, file, license, sha256)
+│   ├── README.md              # donor acquisition instructions
+│   ├── fonts/                 # actual .ttf/.otf/.ttc files (gitignored)
+│   └── licenses/              # each donor's OFL/license file (gitignored)
+├── images/                    # screenshots for this README
+└── TODO.essenfont/            # build phases + design decisions
+----
+
+=== Why no UFO source?
+
+essenfont doesn't hand-design glyphs — every glyph is sourced from
+canonical donor fonts that are already authoritative for their scripts:
+
+* Noto Sans for Latin/Cyrillic/Greek/common symbols
+* Full-Sung for CJK (the Taiwan MOE 全宋體 family covers all CJK
+  Unified Ideographs blocks including Extension J, Unicode 17)
+* UniHieroglyphica for Egyptian Hieroglyphs
+* Lentariso for Sidetic
+* etc.
+
+Designing a UFO source would either (a) duplicate work the donors
+already did or (b) introduce inconsistency. essenfont's job is
+assembly + redistribution, not authorship.
+
+If a glyph needs correction, the right path is to fix it in the
+upstream donor font — essenfont picks up the correction on the next
+donor-version bump.
+
+== Comparison with last-resort-font
+
+[cols="1,2,2", options="header"]
+|===
+|Aspect |Last Resort Font |essenfont
+
+|Glyph source
+|Hand-designed tofu boxes (hex codepoint label)
+|Vector outlines from real fonts (Noto, Full-Sung, etc.)
+
+|Build toolchain
+|Adobe AFDKO + Python fonttools (`makeotf`, `otf2ttf`, `ttx`)
+|Ruby + fontisan (no AFDKO; no Python)
+
+|Source format
+|UFO + TTX overrides
+|Donor font files + Ruby scripts
+
+|CJK coverage
+|Noto Sans CJK (partial)
+|Full-Sung family (Taiwan MOE 全宋體) — all CJK extensions including Unicode 17 Ext J
+
+|Unicode coverage
+|Last published at Unicode 16
+|Targets Unicode 17 (incl. Sidetic, Beria Erfe, Tai Yo, Tolong Siki, Egyptian Hieroglyphs Extended-B)
+
+|License
+|OFL
+|OFL
+
+|Release artifact
+|Committed TTF in repo
+|GitHub Releases (binary never committed)
+|===
+
+== CJK donor choice: Full-Sung
+
+For CJK Unified Ideographs (and all extensions), essenfont uses the
+https://fonts.moedict.tw/[Taiwan MOE 全宋體] (Full-Sung) family
+instead of Noto Sans CJK. Reasons:
+
+* *More comprehensive* — covers all extensions including Extension J
+  (Unicode 17 additions, U+31350..U+323AF)
+* *Government-backed* — Taiwan MOE maintains the canonical Traditional
+  Chinese glyph set
+* *OFL* — freely redistributable
+* *Higher fidelity for Traditional Chinese* — Noto Sans CJK ships
+  Simplified-first by default; Full-Sung ships Traditional-first
+
+The family is multi-file (each TTF covers a Unicode plane / extension):
+
+[cols="1,2,3", options="header"]
+|===
+|File |Unicode range |Coverage
+
+|`FSung-m.ttf`
+|BMP (U+0000..U+FFFF)
+|CJK Unified Ideographs (U+4E00..U+9FFF) + ~430 small ranges across the BMP
+
+|`FSung-2.ttf`
+|SIP (U+20000..U+2FFFF)
+|CJK Extensions B (U+20000), C (U+2A700), D (U+2B740), E (U+2B820)
+
+|`FSung-3.ttf`
+|TIP (U+30000..U+3FFFF)
+|CJK Extension C (U+30000) + Extension J (U+31350 — Unicode 17)
+
+|`FSung-X.ttf`
+|Plane 3 (U+100000..U+10FFFF)
+|Tertiary Ideographic Plane extensions
+
+|`FSung-F.ttf`
+|PUA (U+F0000..U+FFFFF)
+|Private Use Area — NOT used by essenfont (Unicode standard doesn't assign these)
+|===
+
+The build script opens each Full-Sung TTF via fontisan, walks the
+per-cp mapping from ucode's universal-set manifest, and pulls the
+correct glyph for each CJK codepoint.
+
+Tangut (separate script from CJK ideographs) is covered by
+Noto Sans Tangut, not Full-Sung.
+
+== Contributing
+
+essenfont welcomes contributions:
+
+* *Glyph corrections* — fix the upstream donor font; essenfont picks
+  up the correction on the next donor-version bump. Open PRs against
+  the relevant donor repo (Noto, Full-Sung, Lentariso, etc.)
+* *Donor font updates* — add or replace an entry in
+  link:sources/manifest.yml[sources/manifest.yml] (must be OFL-compatible)
+* *Build pipeline improvements* — Ruby scripts in `scripts/` and
+  cross-repo PRs to fontisan when gaps surface
+* *Coverage reports* — TODO.essenfont/06 tracks the build verification
+  flow; gaps (missing glyphs, extraction bugs) belong there
+
+See link:TODO.essenfont/[TODO.essenfont/] for the build phase plan
+(01 repo skeleton, 03 build script, 04 stitch script — now folded
+into build, 05 TTC variant, 06 verify script, 07 README/license, 08
+donor manifest).
+
+== Acknowledgments
+
+essenfont is assembled from glyphs contributed by:
+
+* https://fonts.google.com/noto[Noto family] (Google + Monotype + Adobe) — Latin, Cyrillic, Greek, Math, Symbols, Music, Emoji, Tangut, Tolong Siki, Sharada, Tai Yo
+* https://fonts.moedict.tw/[Taiwan MOE 全宋體 (Full-Sung)] — CJK Unified Ideographs (all extensions incl. Unicode 17 Ext J)
+* https://github.com/Bry10022/Lentariso[Lentariso by Bry10022] — Sidetic, Imperial Aramaic, Phoenician
+* https://software.sil.org/kedebideri[Kedebideri by SIL] — Beria Erfe
+* https://www.suignard.com/UniHieroglyphica[UniHieroglyphica by Michel Suignard] — Egyptian Hieroglyphs
+* https://github.com/microsoft/font-tools[Egyptian Text by Microsoft] — Egyptian Hieroglyph Format Controls
+* https://www.babelstone.co.uk/Fonts/Pseudographica.html[BabelStone Pseudographica by Andrew West] — Symbols for Legacy Computing Supplement
+* https://dn-works.com/ufas[Symbola by George Douros] — Supplemental Arrows-C
+* https://github.com/unicode-org/last-resort-font[Last Resort Font by Unicode, Inc.] — fallback tofu glyphs
+
+See link:sources/manifest.yml[sources/manifest.yml] for the full
+registry with sha256 + license per donor.
+
+The full OFL license text is in
+link:../../raw/main/LICENSE[the LICENSE file], and per-donor OFL
+texts are auto-generated as `LICENSE-SOURCES.md` on every release.
+
+== License
+
+SIL Open Font License 1.1. See link:LICENSE[LICENSE].
+
+This Font Software is licensed under the SIL Open Font License,
+Version 1.1. The license is also available with a FAQ at:
+https://openfontlicense.org
+
+The assembled font contains glyphs from multiple OFL-licensed source
+fonts (see Acknowledgments above). Each source's OFL terms continue
+to apply to its contributed glyphs.
+
+== Related projects
+
+[cols="1,4", options="header"]
+|===
+|Repo |Role
+
+|link:../../ucode[fontist/ucode]
+|Unicode Character Database toolkit — produces the universal-set
+manifest that drives essenfont's stitch
+
+|link:../../fontisan[fontist/fontisan]
+|Font parsing + conversion library — provides the Ruby API essenfont
+uses to read donor fonts + write the output TTF
+
+|link:../../fontist-archive-public[fontist/fontist-archive-public]
+|Public artifact archive — distributes essenfont via
+`panglyph/v{X.Y.Z}/` (TODO.full/09 + TODO.full/16)
+
+|link:../../fontist.org[fontist/fontist.org]
+|Consumer site — uses essenfont as the last-resort fallback for
+codepoints the user's active font doesn't cover
+
+|link:../../fontist[fontist/fontist]
+|Font discovery layer — resolves donor font labels to file paths
+(used by ucode's `fetch fonts`)
+
+|link:https://github.com/unicode-org/last-resort-font[unicode-org/last-resort-font]
+|Inspiration — essenfont mirrors the release artifact approach but
+ships real outlines instead of tofu boxes, and uses Full-Sung for
+CJK instead of Noto
+|===

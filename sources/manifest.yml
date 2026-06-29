@@ -1,0 +1,271 @@
+---
+# essenfont donor font registry.
+#
+# Each entry declares a font whose glyphs essenfont may pull.
+# License must be OFL-compatible (see ofl_compatible_licenses below);
+# the build refuses to use anything else.
+#
+# Per-cp mapping comes from ucode's universal-set manifest at
+# ../ucode/output/universal_glyph_set/manifest.json. This file only
+# declares the donor registry.
+
+ucd_version: "17.0.0"
+essenfont_version: "0.1.0"
+generated_at: "2026-06-29T00:00:00Z"
+
+ofl_compatible_licenses:
+  - OFL
+  - Apache
+  - MIT
+  - BSD
+  - CC0
+  - UFL
+  - Bitstream
+  - GUST
+  - CC-BY
+
+donors:
+
+  # ─────────── Full-Sung (CJK Unified Ideographs — ALL extensions) ───────────
+  # Taiwan MOE 全宋體 by lxs602
+  # Repo:  https://github.com/lxs602/FSung-font
+  # Web:   https://fgwang.blogspot.com/2025/09/unicode-17.html
+  # Covers CJK Ext A–J including Unicode 17 Ext J.
+
+  - label: fsung-m
+    file: references/input-fonts/FSung-m.ttf
+    family: Full-Sung
+    style: Regular
+    version: "1.0"
+    license: OFL
+    sha256: "17f432a2cc07e38d9cea266c9cdb370c9021e7ca211e39801216daf1e355a271"
+    path_local_only: true
+    url: https://github.com/lxs602/FSung-font
+    web: https://fgwang.blogspot.com/2025/09/unicode-17.html
+    author: "Taiwan Ministry of Education (教育部) — maintained by lxs602"
+    covers: [CJK_Unified_Ideographs, CJK_Symbols_and_Punctuation, CJK_Radicals_Supplement, CJK_Strokes, Enclosed_CJK_Letters_and_Months]
+    notes: "BMP font. Primary CJK Unified Ideographs donor (Traditional-first). ~40k cps across ~435 ranges."
+
+  - label: fsung-2
+    file: references/input-fonts/FSung-2.ttf
+    family: Full-Sung
+    style: Regular
+    version: "1.0"
+    license: OFL
+    sha256: "40296ae3899f17bf16976449fcbeadeb43e2c4d3e9f5ec6fd97438deb36d2ca4"
+    path_local_only: true
+    url: https://github.com/lxs602/FSung-font
+    web: https://fgwang.blogspot.com/2025/09/unicode-17.html
+    author: "Taiwan Ministry of Education (教育部) — maintained by lxs602"
+    covers: [CJK_Unified_Ideographs_Extension_B, CJK_Unified_Ideographs_Extension_C, CJK_Unified_Ideographs_Extension_D, CJK_Unified_Ideographs_Extension_E]
+    notes: "SIP font. Covers CJK Ext B/C/D/E (U+20000..U+2B81D)."
+
+  - label: fsung-3
+    file: references/input-fonts/FSung-3.ttf
+    family: Full-Sung
+    style: Regular
+    version: "1.0"
+    license: OFL
+    sha256: "85d6acd77fecde10fd277d1ef9be64520464ca591da15e68a7999c83b3aed37e"
+    path_local_only: true
+    url: https://github.com/lxs602/FSung-font
+    web: https://fgwang.blogspot.com/2025/09/unicode-17.html
+    author: "Taiwan Ministry of Education (教育部) — maintained by lxs602"
+    covers: [CJK_Unified_Ideographs_Extension_F, CJK_Unified_Ideographs_Extension_J]
+    notes: "TIP font. Covers CJK Ext F + Ext J (Unicode 17 additions, U+31350..U+323AF)."
+
+  - label: fsung-x
+    file: references/input-fonts/FSung-X.ttf
+    family: Full-Sung
+    style: Regular
+    version: "1.0"
+    license: OFL
+    sha256: "5617c1d5c1f249dae88afc06b7db3eda8eef064ae8b6207992ff8413303521f9"
+    path_local_only: true
+    url: https://github.com/lxs602/FSung-font
+    web: https://fgwang.blogspot.com/2025/09/unicode-17.html
+    author: "Taiwan Ministry of Education (教育部) — maintained by lxs602"
+    covers: [CJK_Unified_Ideographs_Extension_G, CJK_Unified_Ideographs_Extension_H]
+    notes: "Plane 3 font. Tertiary ideographic plane extensions."
+
+  # ─────────── Noto family (Latin/Cyrillic/Greek/symbols) ───────────
+
+  - label: noto-sans
+    file: references/input-fonts/NotoSans-Regular.ttf
+    family: Noto Sans
+    style: Regular
+    version: "2.0"
+    license: OFL
+    sha256: "478c558ea716033cd60c03438f628dfa75694dcf6b5f6d505a2f05fd2b4f3823"
+    url: https://github.com/notofonts/notofonts.github.io
+    author: "Google + Monotype + Adobe"
+    covers: [Basic_Latin, Latin-1_Supplement, Latin_Extended-A, Latin_Extended-B, IPA_Extensions, Spacing_Modifier_Letters, Combining_Diacritical_Marks, Greek_and_Coptic, Cyrillic]
+    notes: "Universal fallback for Latin/Cyrillic/Greek/symbols and any block without a specialist entry."
+
+  # ─────────── Noto specialists ───────────
+
+  - label: noto-sans-tangut
+    file: references/input-fonts/NotoSansTangut-Regular.ttf
+    family: Noto Sans Tangut
+    style: Regular
+    license: OFL
+    sha256: "5c656cb03b4f32718bb70e68533e2f3d121b0d2bbfc7cc6d76a9dca5ae476e9b"
+    url: https://github.com/notofonts/notofonts.github.io/tree/main/fonts/NotoSansTangut
+    author: "Google (Noto Project)"
+    covers: [Tangut, Tangut_Components, Tangut_Supplement]
+
+  - label: noto-sans-tolong-siki
+    file: references/input-fonts/NotoSansTolongSiki-Regular.ttf
+    family: Noto Sans Tolong Siki
+    style: Regular
+    license: OFL
+    sha256: "3f0d8919358d44082ea610a0dc0deec0f9e940f3c310a95abef739bce47f3a98"
+    url: https://github.com/notofonts/notofonts.github.io/tree/main/fonts/NotoSansTolongSiki
+    author: "Google (Noto Project)"
+    covers: [Tolong_Siki]
+
+  - label: noto-sans-sharada
+    file: references/input-fonts/NotoSansSharada-Regular.ttf
+    family: Noto Sans Sharada
+    style: Regular
+    license: OFL
+    sha256: "8350a4cf4b5bdc0707aa5077075b0885a4f3f0f08ed6b49b8e5d142aef4032da"
+    url: https://github.com/notofonts/notofonts.github.io/tree/main/fonts/NotoSansSharada
+    author: "Google (Noto Project)"
+    covers: [Sharada_Supplement]
+
+  - label: noto-sans-math
+    file: references/input-fonts/NotoSansMath-Regular.ttf
+    family: Noto Sans Math
+    style: Regular
+    license: OFL
+    sha256: "d51afd5739c7ba6c44fcab35a88160e25dfb69a2d4ad0bd99533f8d894af1f96"
+    url: https://github.com/notofonts/notofonts.github.io/tree/main/fonts/NotoSansMath
+    author: "Google (Noto Project)"
+    covers: [Mathematical_Operators, Supplemental_Mathematical_Operators, Mathematical_Alphanumeric_Symbols, Miscellaneous_Mathematical_Symbols-A, Miscellaneous_Mathematical_Symbols-B]
+
+  - label: noto-music
+    file: references/input-fonts/NotoMusic-Regular.ttf
+    family: Noto Music
+    style: Regular
+    license: OFL
+    sha256: "fda9c3dcd4164edd5af283b581f17458ef55dc205b6e0607aa0fbfbf99ed5704"
+    url: https://github.com/notofonts/notofonts.github.io/tree/main/fonts/NotoMusic
+    author: "Google (Noto Project)"
+    covers: [Musical_Symbols]
+
+  - label: noto-sans-symbols
+    file: references/input-fonts/NotoSansSymbols-Regular.ttf
+    family: Noto Sans Symbols
+    style: Regular
+    license: OFL
+    sha256: "d0e98e9a2c046594c5021437273943be7e79e0fd980fde125279e22302212595"
+    url: https://github.com/notofonts/notofonts.github.io/tree/main/fonts/NotoSansSymbols
+    author: "Google (Noto Project)"
+    covers: [Miscellaneous_Symbols, Miscellaneous_Technical, Alchemical_Symbols]
+
+  - label: noto-sans-symbols-2
+    file: references/input-fonts/NotoSansSymbols2-Regular.ttf
+    family: Noto Sans Symbols 2
+    style: Regular
+    license: OFL
+    sha256: "c4a0a80f0041ce4be81e2478faad22776d23edb98ae3f0d19bd37044820ecf9d"
+    url: https://github.com/notofonts/notofonts.github.io/tree/main/fonts/NotoSansSymbols2
+    author: "Google (Noto Project)"
+    covers: [Miscellaneous_Symbols_and_Pictographs, Supplemental_Symbols_and_Pictographs, Transport_and_Map_Symbols, Chess_Symbols, Symbols_and_Pictographs_Extended-A, Symbols_for_Legacy_Computing]
+
+  - label: noto-emoji
+    file: references/input-fonts/NotoEmoji-Regular.ttf
+    family: Noto Emoji
+    style: Regular
+    license: OFL
+    sha256: "dbd7f3c2fff013b2ea0294fbb16606700fd151cb9634ee99c7d2721fbe984ccc"
+    url: https://github.com/googlefonts/noto-emoji
+    author: "Google (Noto Project)"
+    covers: [Emoticons, Dingbats]
+    notes: "Monochrome variant only. Color emoji (CBDT/CBLC) not used."
+
+  # ─────────── UC17 specialists ───────────
+
+  - label: kedebideri
+    file: references/input-fonts/Kedebideri-Regular.ttf
+    family: Kedebideri
+    style: Regular
+    version: "3.001"
+    license: OFL
+    sha256: "f95907a8c39c68d557c2264fcf593a858eb4751cd5e0c3c7c53e1ef354444064"
+    url: https://software.sil.org/kedebideri/
+    author: "SIL International"
+    covers: [Beria_Erfe]
+
+  # ─────────── Lentariso (extracted from repo TTFs/) ───────────
+  # The repo has no releases; we vendor from the TTFs/ folder via ZIP download.
+
+  - label: lentariso
+    file: references/input-fonts/Lentariso-Regular.ttf
+    family: Lentariso
+    style: Regular
+    version: "1.033"
+    license: OFL
+    sha256: "TBD"
+    url: https://github.com/Bry10022/Lentariso
+    author: "Bryndan W. Meyerholt (Bry10022)"
+    url_extract: https://codeload.github.com/Bry10022/Lentariso/zip/refs/heads/master
+    url_extract_member: Lentariso-master/TTFs/Lentariso-Regular.ttf
+    covers: [Imperial_Aramaic, Phoenician, Sidetic]
+
+  # ─────────── Egyptian Text (Microsoft font-tools) ───────────
+
+  - label: egyptian-text
+    file: references/input-fonts/eot.ttf
+    family: Egyptian Text
+    style: Regular
+    license: OFL
+    sha256: "33aa615f2a44bea78392bd6cf2c1d94f61dae7ca54fc37287c564908191999e9"
+    url: https://github.com/microsoft/font-tools
+    author: "Microsoft Corporation"
+    url_extract: https://codeload.github.com/microsoft/font-tools/zip/refs/heads/main
+    url_extract_member: font-tools-main/EgyptianOpenType/EgyptianText-Regular.ttf
+    covers: [Egyptian_Hieroglyph_Format_Controls]
+    notes: "Repo is MIT-licensed; the font file itself is OFL."
+
+  # ─────────── Symbola (mirror) ───────────
+
+  - label: symbola
+    file: references/input-fonts/Symbola.ttf
+    family: Symbola
+    style: Regular
+    license: OFL
+    sha256: "6f7b0eca56d1e9fbc57f7e60a52fd3bd761a7953ec31c13d7247e142e310604d"
+    url: https://raw.githubusercontent.com/zhm/symbola/master/fonts/Symbola.ttf
+    author: "George Douros"
+    original_url: https://dn-works.com/ufas/
+    covers: [Supplemental_Arrows-C]
+    notes: "Original at dn-works.com (no longer publicly downloadable). Mirror at github.com/zhm/symbola."
+
+  # ─────────── Last Resort (fallback tofu) ───────────
+
+  - label: last-resort
+    file: references/input-fonts/LastResortHE-Regular.ttf
+    family: Last Resort HE
+    style: Regular
+    license: OFL
+    sha256: "f6d85586f7d062b93e10fdfdf185f4712fc0287dfe34219377c9688d8f340b79"
+    url: https://github.com/unicode-org/last-resort-font
+    author: "Unicode, Inc."
+    covers: []
+    notes: "Fallback only. Produces tofu-box glyphs for codepoints no donor covered."
+
+  # ─────────── Still needed (path_local_only) ───────────
+
+  - label: noto-serif-tai-yo
+    file: references/input-fonts/NotoSerifTaiYo.ttf
+    family: Noto Serif Tai Yo
+    style: Regular
+    version: "draft-2025-09"
+    license: OFL
+    sha256: "TBD"
+    path_local_only: true
+    author: "Google (Noto Project) / translationcommons.org"
+    covers: [Tai_Yo]
+    notes: "Pre-release Noto variant. Contact translationcommons.org maintainers."
